@@ -1,30 +1,25 @@
 package com.medikitos.medicit.dto;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
-public class Dto_Paciente {
+public class Dto_Medico {
 
     private String nombre;
     private String apellido;
     private String email;
     private String telefono;
-    private LocalDate fechaNacimiento;
-    private String genero;
-    private String direccion;
+    private String cedulaProfesional;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Paciente(String nombre, String apellido, String email, String telefono, LocalDate fechaNacimiento,
-            String genero, String direccion, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+    public Dto_Medico(String nombre, String apellido, String email, String telefono,
+            String cedulaProfesional, Instant createdAt, Instant updatedAt, Instant deletedAt) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-        this.genero = genero;
-        this.direccion = direccion;
+        this.cedulaProfesional = cedulaProfesional;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -62,28 +57,12 @@ public class Dto_Paciente {
         this.telefono = telefono;
     }
 
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getCedulaProfesional() {
+        return cedulaProfesional;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setCedulaProfesional(String cedulaProfesional) {
+        this.cedulaProfesional = cedulaProfesional;
     }
 
     public Instant getCreatedAt() {
