@@ -1,7 +1,6 @@
 package com.medikitos.medicit.entity;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,9 +16,9 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "paciente")
+@Table(name = "medico")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Paciente {
+public class Medico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,14 +37,8 @@ public class Paciente {
     @Column(nullable = false)
     private String telefono;
 
-    @Column(nullable = false)
-    private LocalDate fechaNacimiento;
-
-    @Column(nullable = false)
-    private String genero;
-
-    @Column(columnDefinition = "TEXT")
-    private String direccion;
+    @Column(nullable = false, unique = true)
+    private String cedulaProfesional;
 
     @Column(nullable = false)
     private Instant createdAt;
@@ -55,7 +48,15 @@ public class Paciente {
     private Instant deletedAt;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
+    private List<Horario> horarios;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
+    private List<MedicoEspecialidad> especialidades;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
     private List<Cita> citas;
 
     // ── Getters ──────────────────────────────────────────────────────────────
@@ -70,17 +71,17 @@ public class Paciente {
 
     public String getTelefono() { return telefono; }
 
-    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
-
-    public String getGenero() { return genero; }
-
-    public String getDireccion() { return direccion; }
+    public String getCedulaProfesional() { return cedulaProfesional; }
 
     public Instant getCreatedAt() { return createdAt; }
 
     public Instant getUpdatedAt() { return updatedAt; }
 
     public Instant getDeletedAt() { return deletedAt; }
+
+    public List<Horario> getHorarios() { return horarios; }
+
+    public List<MedicoEspecialidad> getEspecialidades() { return especialidades; }
 
     public List<Cita> getCitas() { return citas; }
 
@@ -96,17 +97,17 @@ public class Paciente {
 
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
-
-    public void setGenero(String genero) { this.genero = genero; }
-
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public void setCedulaProfesional(String cedulaProfesional) { this.cedulaProfesional = cedulaProfesional; }
 
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
     public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
     public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
+
+    public void setHorarios(List<Horario> horarios) { this.horarios = horarios; }
+
+    public void setEspecialidades(List<MedicoEspecialidad> especialidades) { this.especialidades = especialidades; }
 
     public void setCitas(List<Cita> citas) { this.citas = citas; }
 
