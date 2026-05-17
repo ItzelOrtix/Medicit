@@ -34,7 +34,9 @@ public class Mapper_Paciente {
                 paciente.getFechaNacimiento(),
                 paciente.getGenero(),
                 paciente.getDireccion(),
-                paciente.getCreatedAt());
+                paciente.getCreatedAt(),
+                paciente.getUpdatedAt(),
+                paciente.getDeletedAt());
     }
 
 }

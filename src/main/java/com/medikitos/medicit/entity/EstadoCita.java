@@ -1,0 +1,50 @@
+package com.medikitos.medicit.entity;
+
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@Entity
+@ToString
+@Table(name = "estado_cita")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class EstadoCita {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String nombre;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "estado", fetch = FetchType.LAZY)
+    private List<Cita> citas;
+
+    // ── Getters ──────────────────────────────────────────────────────────────
+
+    public Long getId() { return id; }
+
+    public String getNombre() { return nombre; }
+
+    public List<Cita> getCitas() { return citas; }
+
+    // ── Setters ──────────────────────────────────────────────────────────────
+
+    public void setId(Long id) { this.id = id; }
+
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public void setCitas(List<Cita> citas) { this.citas = citas; }
+
+}
