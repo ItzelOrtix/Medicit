@@ -16,7 +16,7 @@ public class Mapper_Horario {
         horario.setDiaSemana(dto.getDiaSemana());
         horario.setHoraInicio(dto.getHoraInicio());
         horario.setHoraFin(dto.getHoraFin());
-        horario.setDisponible(dto.getDisponible());
+        horario.setActivo(dto.getActivo() == null ? Boolean.TRUE : dto.getActivo());
         horario.setFechaEspecifica(dto.getFechaEspecifica());
         horario.setCreatedAt(Instant.now());
 
@@ -30,9 +30,11 @@ public class Mapper_Horario {
                 horario.getDiaSemana(),
                 horario.getHoraInicio(),
                 horario.getHoraFin(),
-                horario.getDisponible(),
+                horario.getActivo(),
                 horario.getFechaEspecifica(),
-                horario.getCreatedAt());
+                horario.getCreatedAt(),
+                horario.getUpdatedAt(),
+                horario.getDeletedAt());
     }
 
 }

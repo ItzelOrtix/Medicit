@@ -1,28 +1,33 @@
 package com.medikitos.medicit.dto;
 
 import java.time.Instant;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Dto_Horario {
 
     private Long medicoId;
-    private String diaSemana;
+    private DayOfWeek diaSemana;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Boolean disponible;
+    private Boolean activo;
     private LocalDate fechaEspecifica;
     private Instant createdAt;
+    private Instant updatedAt;
+    private Instant deletedAt;
 
-    public Dto_Horario(Long medicoId, String diaSemana, LocalTime horaInicio, LocalTime horaFin,
-            Boolean disponible, LocalDate fechaEspecifica, Instant createdAt) {
+    public Dto_Horario(Long medicoId, DayOfWeek diaSemana, LocalTime horaInicio, LocalTime horaFin,
+            Boolean activo, LocalDate fechaEspecifica, Instant createdAt, Instant updatedAt, Instant deletedAt) {
         this.medicoId = medicoId;
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.disponible = disponible;
+        this.activo = activo;
         this.fechaEspecifica = fechaEspecifica;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public Long getMedicoId() {
@@ -33,11 +38,11 @@ public class Dto_Horario {
         this.medicoId = medicoId;
     }
 
-    public String getDiaSemana() {
+    public DayOfWeek getDiaSemana() {
         return diaSemana;
     }
 
-    public void setDiaSemana(String diaSemana) {
+    public void setDiaSemana(DayOfWeek diaSemana) {
         this.diaSemana = diaSemana;
     }
 
@@ -57,12 +62,12 @@ public class Dto_Horario {
         this.horaFin = horaFin;
     }
 
-    public Boolean getDisponible() {
-        return disponible;
+    public Boolean getActivo() {
+        return activo;
     }
 
-    public void setDisponible(Boolean disponible) {
-        this.disponible = disponible;
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
     public LocalDate getFechaEspecifica() {
@@ -79,6 +84,22 @@ public class Dto_Horario {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Instant getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Instant deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
 }

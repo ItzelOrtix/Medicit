@@ -1,33 +1,20 @@
 package com.medikitos.medicit.dto;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
-public class Dto_Paciente {
+public class Dto_RegistroPaciente {
 
     private String nombre;
     private String apellido;
     private String correo;
+    private String usuario;
+    private String contrasena;
     private String telefono;
     private LocalDate fechaNacimiento;
     private String genero;
     private String direccion;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private Instant deletedAt;
 
-    public Dto_Paciente(String nombre, String apellido, String correo, String telefono, LocalDate fechaNacimiento,
-            String genero, String direccion, Instant createdAt, Instant updatedAt, Instant deletedAt) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-        this.genero = genero;
-        this.direccion = direccion;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+    public Dto_RegistroPaciente() {
     }
 
     public String getNombre() {
@@ -52,6 +39,22 @@ public class Dto_Paciente {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getTelefono() {
@@ -84,30 +87,6 @@ public class Dto_Paciente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Instant deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
 }
