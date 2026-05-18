@@ -1,49 +1,35 @@
 package com.medikitos.medicit.entity;
 
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+@Data
 @Entity
 @ToString
 @Table(name = "medico_especialidad")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class MedicoEspecialidad {
 
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private MedicoEspecialidadId id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("medicoId")
-    @JoinColumn(name = "medico_id")
+    @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("especialidadId")
-    @JoinColumn(name = "especialidad_id")
+    @JoinColumn(name = "especialidad_id", nullable = false)
     private Especialidad especialidad;
-
-    // ── Getters ──────────────────────────────────────────────────────────────
-
-    public MedicoEspecialidadId getId() { return id; }
-
-    public Medico getMedico() { return medico; }
-
-    public Especialidad getEspecialidad() { return especialidad; }
-
-    // ── Setters ──────────────────────────────────────────────────────────────
-
-    public void setId(MedicoEspecialidadId id) { this.id = id; }
-
-    public void setMedico(Medico medico) { this.medico = medico; }
-
-    public void setEspecialidad(Especialidad especialidad) { this.especialidad = especialidad; }
 
 }

@@ -1,24 +1,32 @@
 package com.medikitos.medicit.entity;
 
 import java.time.Instant;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+@Data
 @Entity
 @ToString
-@Table(name = "horario")
+@Table(name = "horario", indexes = {
+        @Index(name = "idx_horario_medico_dia", columnList = "medico_id,dia_semana"),
+        @Index(name = "idx_horario_medico_fecha", columnList = "medico_id,fecha_especifica")
+})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Horario {
 
@@ -31,8 +39,9 @@ public class Horario {
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
-    @Column(nullable = false)
-    private String diaSemana;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dia_semana")
+    private DayOfWeek diaSemana;
 
     @Column(nullable = false)
     private LocalTime horaInicio;
@@ -41,47 +50,16 @@ public class Horario {
     private LocalTime horaFin;
 
     @Column(nullable = false)
-    private Boolean disponible;
+    private Boolean activo;
 
+    @Column(name = "fecha_especifica")
     private LocalDate fechaEspecifica;
 
     @Column(nullable = false)
     private Instant createdAt;
 
-    // ── Getters ──────────────────────────────────────────────────────────────
+    private Instant updatedAt;
 
-    public Long getId() { return id; }
-
-    public Medico getMedico() { return medico; }
-
-    public String getDiaSemana() { return diaSemana; }
-
-    public LocalTime getHoraInicio() { return horaInicio; }
-
-    public LocalTime getHoraFin() { return horaFin; }
-
-    public Boolean getDisponible() { return disponible; }
-
-    public LocalDate getFechaEspecifica() { return fechaEspecifica; }
-
-    public Instant getCreatedAt() { return createdAt; }
-
-    // ── Setters ──────────────────────────────────────────────────────────────
-
-    public void setId(Long id) { this.id = id; }
-
-    public void setMedico(Medico medico) { this.medico = medico; }
-
-    public void setDiaSemana(String diaSemana) { this.diaSemana = diaSemana; }
-
-    public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
-
-    public void setHoraFin(LocalTime horaFin) { this.horaFin = horaFin; }
-
-    public void setDisponible(Boolean disponible) { this.disponible = disponible; }
-
-    public void setFechaEspecifica(LocalDate fechaEspecifica) { this.fechaEspecifica = fechaEspecifica; }
-
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    private Instant deletedAt;
 
 }

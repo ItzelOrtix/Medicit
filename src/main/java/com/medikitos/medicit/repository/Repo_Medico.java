@@ -6,4 +6,6 @@ import com.medikitos.medicit.entity.Medico;
 
 public interface Repo_Medico extends JpaRepository<Medico, Long> {
 
+    boolean existsByCedulaProfesional(String cedulaProfesional);
+
 }

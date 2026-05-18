@@ -11,7 +11,6 @@ public class Dto_Cita {
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Long estadoId;
     private String motivo;
     private String notas;
     private Instant createdAt;
@@ -19,14 +18,13 @@ public class Dto_Cita {
     private Instant deletedAt;
 
     public Dto_Cita(Long pacienteId, Long medicoId, LocalDate fecha, LocalTime horaInicio,
-            LocalTime horaFin, Long estadoId, String motivo, String notas,
+            LocalTime horaFin, String motivo, String notas,
             Instant createdAt, Instant updatedAt, Instant deletedAt) {
         this.pacienteId = pacienteId;
         this.medicoId = medicoId;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.estadoId = estadoId;
         this.motivo = motivo;
         this.notas = notas;
         this.createdAt = createdAt;
@@ -72,14 +70,6 @@ public class Dto_Cita {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
-    }
-
-    public Long getEstadoId() {
-        return estadoId;
-    }
-
-    public void setEstadoId(Long estadoId) {
-        this.estadoId = estadoId;
     }
 
     public String getMotivo() {
