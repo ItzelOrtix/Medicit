@@ -6,4 +6,8 @@ import com.medikitos.medicit.entity.Especialidad;
 
 public interface Repo_Especialidad extends JpaRepository<Especialidad, Long> {
 
+    boolean existsByNombreIgnoreCase(String nombre);
+
+    boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
+
 }
