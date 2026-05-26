@@ -10,8 +10,8 @@ import Horarios from './pages/Horarios';
 import Perfil from './pages/Perfil';
 
 function ProtectedRoute({ children }) {
-  const auth = localStorage.getItem('medicit_auth') === 'true';
-  return auth ? children : <Navigate to="/login" replace />;
+  const token = localStorage.getItem('medicit_token');
+  return token ? children : <Navigate to="/login" replace />;
 }
 
 export default function App() {

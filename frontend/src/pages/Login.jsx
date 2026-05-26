@@ -3,8 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight, Heart, Stethoscope, Activity, CalendarDays } from 'lucide-react';
 import Logo from '../components/ui/Logo';
-
-const CREDENTIALS = { email: 'admin@medicit.com', password: 'admin123' };
+import api from '../services/api';
 
 const COL_LEFT = [
   'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=500&q=90',
@@ -65,7 +64,7 @@ export default function Login() {
   const [shake, setShake] = useState(false);
 
   // Register state
-  const [regForm, setRegForm] = useState({ nombre: '', apellido: '', telefono: '', fechaNacimiento: '', genero: '', direccion: '', email: '', password: '', confirm: '' });
+  const [regForm, setRegForm] = useState({ nombre: '', apellido: '', usuario: '', telefono: '', fechaNacimiento: '', genero: '', direccion: '', email: '', password: '', confirm: '' });
   const [showRegPass, setShowRegPass] = useState(false);
   const [regLoading, setRegLoading] = useState(false);
   const [regError, setRegError] = useState('');
@@ -88,13 +87,22 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    await new Promise((r) => setTimeout(r, 1500));
-    if (loginForm.email === CREDENTIALS.email && loginForm.password === CREDENTIALS.password) {
-      localStorage.setItem('medicit_auth', 'true');
+    try {
+      const { data } = await api.post('/auth/login', {
+        correo: loginForm.email,
+        contrasena: loginForm.password,
+      });
+      localStorage.setItem('medicit_token', data.token);
+      localStorage.setItem('medicit_user', JSON.stringify({
+        id: data.id,
+        correo: data.correo,
+        usuario: data.usuario,
+        rol: data.rol,
+      }));
       navigate('/dashboard');
-    } else {
+    } catch (err) {
       setLoading(false);
-      setError('Correo o contraseña incorrectos');
+      setError(err.response?.data || 'Correo o contraseña incorrectos');
       setShake(true);
       setTimeout(() => setShake(false), 500);
     }
@@ -112,10 +120,25 @@ export default function Login() {
       return;
     }
     setRegLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setRegLoading(false);
-    setRegSuccess(true);
-    setTimeout(() => switchMode('login'), 2500);
+    try {
+      await api.post('/auth/registro/paciente', {
+        nombre: regForm.nombre,
+        apellido: regForm.apellido,
+        correo: regForm.email,
+        usuario: regForm.usuario,
+        contrasena: regForm.password,
+        telefono: regForm.telefono,
+        fechaNacimiento: regForm.fechaNacimiento,
+        genero: regForm.genero,
+        direccion: regForm.direccion,
+      });
+      setRegLoading(false);
+      setRegSuccess(true);
+      setTimeout(() => switchMode('login'), 2500);
+    } catch (err) {
+      setRegLoading(false);
+      setRegError(err.response?.data || 'Error al registrar. Intenta de nuevo.');
+    }
   };
 
   return (
@@ -267,6 +290,13 @@ export default function Login() {
                       <input type="text" value={regForm.apellido} onChange={(e) => setRegForm(p => ({ ...p, apellido: e.target.value }))}
                         required placeholder="García" className={inputClass} />
                     </div>
+                  </div>
+
+                  {/* Usuario */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Usuario</label>
+                    <input type="text" value={regForm.usuario} onChange={(e) => setRegForm(p => ({ ...p, usuario: e.target.value }))}
+                      required placeholder="nombre_usuario" className={inputClass} />
                   </div>
 
                   {/* Teléfono y Fecha */}
