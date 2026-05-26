@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/administrador/**").hasAuthority("ADMINISTRADOR")
                         .requestMatchers("/api/medicos/**").hasAnyAuthority("MEDICO", "ADMINISTRADOR")
-                        .requestMatchers("/api/pacientes/**").hasAnyAuthority("PACIENTE", "ADMINISTRADOR")
+                        .requestMatchers("/api/pacientes/**").hasAnyAuthority("PACIENTE", "ADMINISTRADOR") 
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

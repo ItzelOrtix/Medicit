@@ -59,4 +59,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
+    public Long extractUserId(String token) {
+    return parseToken(token).get("id", Long.class);
+}
 }

@@ -11,7 +11,7 @@ public class Mapper_Login {
     public static Dto_LoginResponse toDto(Credencial credencial, String token, Long expiraEn) {
         return new Dto_LoginResponse(
                 token,
-                credencial.getId(),
+                //credencial.getId(),
                 credencial.getCorreo(),
                 credencial.getUsuario(),
                 credencial.getRol().getNombre(),

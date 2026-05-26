@@ -12,9 +12,9 @@ public class Dto_LoginResponse {
     public Dto_LoginResponse() {
     }
 
-    public Dto_LoginResponse(String token, Long id, String correo, String usuario, String rol, Long expiraEn) {
+    public Dto_LoginResponse(String token, String correo, String usuario, String rol, Long expiraEn) {
         this.token = token;
-        this.id = id;
+        //this.id = id;
         this.correo = correo;
         this.usuario = usuario;
         this.rol = rol;

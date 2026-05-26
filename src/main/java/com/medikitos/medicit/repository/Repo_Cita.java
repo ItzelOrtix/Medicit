@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.medikitos.medicit.entity.Cita;
+import java.util.Optional;
+
 
 public interface Repo_Cita extends JpaRepository<Cita, Long> {
 
@@ -14,5 +16,9 @@ public interface Repo_Cita extends JpaRepository<Cita, Long> {
             Long medicoId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin);
 
     List<Cita> findByMedico_IdAndFechaAndDeletedAtIsNull(Long medicoId, LocalDate fecha);
+
+    Optional<Cita> findByIdAndDeletedAtIsNull(Long id);
+
+    Optional<Cita> findByIdAndPaciente_CorreoAndDeletedAtIsNull(Long id, String correo);
 
 }
