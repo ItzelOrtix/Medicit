@@ -36,28 +36,13 @@ public class Service_Paciente {
         return Mapper_Paciente.toDto(paciente);
     }
 
-    // ── INSERT ────────────────────────────────────────────────────────────────
-
-    public Dto_Paciente create(Dto_Paciente dto) {
-        Paciente paciente = Mapper_Paciente.toEntity(dto);
-        Paciente guardado = repoPaciente.save(paciente);
-        return Mapper_Paciente.toDto(guardado);
-    }
-
     // ── UPDATE ────────────────────────────────────────────────────────────────
 
     public Dto_Paciente update(Long id, Dto_Paciente dto) {
         Paciente paciente = repoPaciente.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
 
-        paciente.setNombre(dto.getNombre());
-        paciente.setApellido(dto.getApellido());
-        paciente.setEmail(dto.getEmail());
-        paciente.setTelefono(dto.getTelefono());
-        paciente.setFechaNacimiento(dto.getFechaNacimiento());
-        paciente.setGenero(dto.getGenero());
-        paciente.setDireccion(dto.getDireccion());
-        paciente.setUpdatedAt(Instant.now());
+        Mapper_Paciente.actualizarEntity(paciente, dto);
 
         Paciente actualizado = repoPaciente.save(paciente);
         return Mapper_Paciente.toDto(actualizado);

@@ -8,14 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @Entity
-@ToString
-@Table(name = "especialidad")
+@Table(name = "rol")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Especialidad {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +22,5 @@ public class Especialidad {
 
     @Column(nullable = false, unique = true)
     private String nombre;
-
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
 
 }

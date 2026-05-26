@@ -1,39 +1,29 @@
 package com.medikitos.medicit.entity;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+@Data
 @Entity
 @ToString
 @Table(name = "paciente")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Paciente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Paciente extends Credencial {
 
     @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false)
     private String apellido;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     @Column(nullable = false)
     private String telefono;
@@ -47,67 +37,8 @@ public class Paciente {
     @Column(columnDefinition = "TEXT")
     private String direccion;
 
-    @Column(nullable = false)
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
-    private Instant deletedAt;
-
     @ToString.Exclude
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
     private List<Cita> citas;
-
-    // ── Getters ──────────────────────────────────────────────────────────────
-
-    public Long getId() { return id; }
-
-    public String getNombre() { return nombre; }
-
-    public String getApellido() { return apellido; }
-
-    public String getEmail() { return email; }
-
-    public String getTelefono() { return telefono; }
-
-    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
-
-    public String getGenero() { return genero; }
-
-    public String getDireccion() { return direccion; }
-
-    public Instant getCreatedAt() { return createdAt; }
-
-    public Instant getUpdatedAt() { return updatedAt; }
-
-    public Instant getDeletedAt() { return deletedAt; }
-
-    public List<Cita> getCitas() { return citas; }
-
-    // ── Setters ──────────────────────────────────────────────────────────────
-
-    public void setId(Long id) { this.id = id; }
-
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public void setApellido(String apellido) { this.apellido = apellido; }
-
-    public void setEmail(String email) { this.email = email; }
-
-    public void setTelefono(String telefono) { this.telefono = telefono; }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
-
-    public void setGenero(String genero) { this.genero = genero; }
-
-    public void setDireccion(String direccion) { this.direccion = direccion; }
-
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-
-    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
-
-    public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
-
-    public void setCitas(List<Cita> citas) { this.citas = citas; }
 
 }

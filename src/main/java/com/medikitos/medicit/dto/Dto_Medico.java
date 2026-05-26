@@ -6,18 +6,18 @@ public class Dto_Medico {
 
     private String nombre;
     private String apellido;
-    private String email;
+    private String correo;
     private String telefono;
     private String cedulaProfesional;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Medico(String nombre, String apellido, String email, String telefono,
+    public Dto_Medico(String nombre, String apellido, String correo, String telefono,
             String cedulaProfesional, Instant createdAt, Instant updatedAt, Instant deletedAt) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.email = email;
+        this.correo = correo;
         this.telefono = telefono;
         this.cedulaProfesional = cedulaProfesional;
         this.createdAt = createdAt;
@@ -41,12 +41,12 @@ public class Dto_Medico {
         this.apellido = apellido;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getTelefono() {

@@ -2,12 +2,30 @@ package com.medikitos.medicit.dto;
 
 public class Dto_Especialidad {
 
+    private Long id;
     private String nombre;
     private String descripcion;
+
+    public Dto_Especialidad() {
+    }
+
+    public Dto_Especialidad(Long id, String nombre, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
 
     public Dto_Especialidad(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
