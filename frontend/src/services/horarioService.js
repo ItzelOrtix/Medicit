@@ -7,6 +7,8 @@ export const horarioService = {
 
   create: async (horario) => api.post('/horarios', horario),
 
+  update: async (id, horario) => api.put(`/horarios/${id}`, horario),
+
   toggleDisponibilidad: async (id) => api.patch(`/horarios/${id}/toggle`),
 
   delete: async (id) => api.delete(`/horarios/${id}`),

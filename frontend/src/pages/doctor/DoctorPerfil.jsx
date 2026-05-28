@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { mockMedicos, mockEspecialidades } from '../../data/mockData';
+import { useState, useEffect } from 'react';
+import { medicoService } from '../../services/medicoService';
+import { especialidadService } from '../../services/especialidadService';
 
 const NAV_ITEMS = ['Cuenta', 'Especialidad', 'Seguridad'];
 
@@ -10,26 +11,54 @@ function getInitials(nombre, apellido) {
 
 export default function DoctorPerfil() {
   const medicoId = parseInt(localStorage.getItem('medicit_medico_id'));
-  const medico   = mockMedicos.find((m) => m.id === medicoId);
-  const espOrig  = medico?.especialidades?.[0];
 
-  const [active,  setActive]  = useState('Cuenta');
-  const [saved,   setSaved]   = useState(false);
-  const [nombre,  setNombre]  = useState(medico?.nombre || '');
-  const [apellido,setApellido]= useState(medico?.apellido || '');
-  const [email,   setEmail]   = useState(medico?.email || '');
-  const [telefono,setTelefono]= useState(medico?.telefono || '');
-  const [cedula,  setCedula]  = useState(medico?.cedulaProfesional || '');
-  const [espId,   setEspId]   = useState(String(espOrig?.id || ''));
+  const [active,        setActive]        = useState('Cuenta');
+  const [saved,         setSaved]         = useState(false);
+  const [loading,       setLoading]       = useState(true);
+  const [especialidades, setEspecialidades] = useState([]);
 
-  const espNombre = mockEspecialidades.find((e) => String(e.id) === espId)?.nombre || espOrig?.nombre || '–';
+  const [nombre,   setNombre]   = useState('');
+  const [apellido, setApellido] = useState('');
+  const [email,    setEmail]    = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [cedula,   setCedula]   = useState('');
+  const [espId,    setEspId]    = useState('');
 
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  useEffect(() => {
+    medicoService.getById(medicoId).then((res) => {
+      const m = res.data;
+      setNombre(m.nombre || '');
+      setApellido(m.apellido || '');
+      setEmail(m.correo || '');
+      setTelefono(m.telefono || '');
+      setCedula(m.cedulaProfesional || '');
+      setEspId(String(m.especialidades?.[0]?.id || ''));
+      setLoading(false);
+    }).catch(() => setLoading(false));
+
+    especialidadService.getAll()
+      .then((res) => setEspecialidades(res.data || []))
+      .catch(() => {});
+  }, [medicoId]);
+
+  const espNombre = especialidades.find((e) => String(e.id) === espId)?.nombre || '–';
+
+  const handleSave = async () => {
+    try {
+      if (active === 'Cuenta') {
+        await medicoService.update(medicoId, { nombre, apellido, correo: email, telefono, cedulaProfesional: cedula });
+      } else if (active === 'Especialidad') {
+        await medicoService.update(medicoId, { nombre, apellido, correo: email, telefono, cedulaProfesional: cedula });
+        if (espId) {
+          await especialidadService.asignarAMedico(parseInt(espId), medicoId);
+        }
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch {}
   };
 
-  if (!medico) return <div className="p-8 text-sm text-gray-400">Médico no encontrado</div>;
+  if (loading) return <div className="p-8 text-sm text-gray-400">Cargando...</div>;
 
   const inputCls = 'w-full border border-gray-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white bg-transparent focus:outline-none focus:border-gray-400 dark:focus:border-white/30 transition-colors';
   const labelCls = 'text-sm text-gray-600 dark:text-white/60 mb-1.5 block';
@@ -70,7 +99,7 @@ export default function DoctorPerfil() {
           <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/10 rounded-2xl p-6">
             <div className="flex items-start gap-5">
               <div className="w-16 h-16 rounded-2xl bg-gray-900 dark:bg-white flex items-center justify-center text-white dark:text-gray-900 text-xl font-bold select-none shrink-0">
-                {getInitials(nombre || medico.nombre, apellido || medico.apellido)}
+                {getInitials(nombre || 'D', apellido || 'r')}
               </div>
               <div className="flex-1">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">{nombre} {apellido}</h2>
@@ -145,7 +174,7 @@ export default function DoctorPerfil() {
                     className={inputCls}
                   >
                     <option value="">Sin especialidad</option>
-                    {mockEspecialidades.map((e) => (
+                    {especialidades.map((e) => (
                       <option key={e.id} value={String(e.id)}>{e.nombre}</option>
                     ))}
                   </select>

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Users } from 'lucide-react';
-import { mockCitas, mockPacientes } from '../../data/mockData';
+import { citaService } from '../../services/citaService';
+import { pacienteService } from '../../services/pacienteService';
 
 const ESTADO_STYLE = {
   CONFIRMADA: 'bg-blue-50 text-blue-700',
@@ -11,29 +12,36 @@ const ESTADO_STYLE = {
 
 export default function DoctorPacientes() {
   const medicoId = parseInt(localStorage.getItem('medicit_medico_id'));
-  const [search, setSearch] = useState('');
+  const [search,       setSearch]       = useState('');
+  const [misPacientes, setMisPacientes] = useState([]);
 
-  const misCitas = mockCitas.filter((c) => c.medicoId === medicoId);
+  useEffect(() => {
+    Promise.all([citaService.getAll(), pacienteService.getAll()])
+      .then(([citasRes, pacRes]) => {
+        const misCitas  = citasRes.data.filter((c) => c.medicoId === medicoId);
+        const pacientes = pacRes.data || [];
 
-  // Agrupar por paciente
-  const pacienteIds = [...new Set(misCitas.map((c) => c.pacienteId))];
-  const misPacientes = pacienteIds.map((pid) => {
-    const dataPaciente = mockPacientes.find((p) => p.id === pid)
-                      || misCitas.find((c) => c.pacienteId === pid)?.paciente;
-    const citas        = misCitas.filter((c) => c.pacienteId === pid).sort((a, b) => b.fecha.localeCompare(a.fecha));
-    const ultimaCita   = citas[0];
-    return {
-      id:          pid,
-      nombre:      dataPaciente?.nombre || '–',
-      apellido:    dataPaciente?.apellido || '',
-      email:       dataPaciente?.email || '',
-      telefono:    dataPaciente?.telefono || '',
-      genero:      dataPaciente?.genero || '',
-      totalCitas:  citas.length,
-      ultimaCita,
-      citas,
-    };
-  });
+        const pacienteIds = [...new Set(misCitas.map((c) => c.pacienteId))];
+        const enriched = pacienteIds.map((pid) => {
+          const dataPaciente = pacientes.find((p) => p.id === pid)
+                            || misCitas.find((c) => c.pacienteId === pid)?.paciente;
+          const citas       = misCitas.filter((c) => c.pacienteId === pid).sort((a, b) => b.fecha.localeCompare(a.fecha));
+          return {
+            id:         pid,
+            nombre:     dataPaciente?.nombre || '–',
+            apellido:   dataPaciente?.apellido || '',
+            email:      dataPaciente?.correo || dataPaciente?.email || '',
+            telefono:   dataPaciente?.telefono || '',
+            genero:     dataPaciente?.genero || '',
+            totalCitas: citas.length,
+            ultimaCita: citas[0],
+            citas,
+          };
+        });
+        setMisPacientes(enriched);
+      })
+      .catch(() => {});
+  }, [medicoId]);
 
   const filtered = misPacientes.filter((p) => {
     const q = search.toLowerCase();

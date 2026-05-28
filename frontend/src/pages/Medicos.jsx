@@ -8,7 +8,7 @@ import Input, { Select } from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
 
 const emptyCreate = { nombre: '', apellido: '', correo: '', contrasena: '', telefono: '', cedulaProfesional: '', especialidadId: '' };
-const emptyEdit   = { nombre: '', apellido: '', correo: '', telefono: '', cedulaProfesional: '' };
+const emptyEdit   = { nombre: '', apellido: '', correo: '', contrasena: '', telefono: '', cedulaProfesional: '' };
 
 function MedicoForm({ initial, mode, especialidades, onSubmit, onClose, loading }) {
   const [form, setForm] = useState(initial);
@@ -21,8 +21,10 @@ function MedicoForm({ initial, mode, especialidades, onSubmit, onClose, loading 
         <Input label="Apellido *" value={form.apellido} onChange={set('apellido')} required placeholder="Ej. Salinas" />
       </div>
       <Input label="Correo electrónico *" type="email" value={form.correo} onChange={set('correo')} required placeholder="medico@medicit.com" />
-      {mode === 'create' && (
+      {mode === 'create' ? (
         <Input label="Contraseña *" type="password" value={form.contrasena} onChange={set('contrasena')} required placeholder="Mínimo 6 caracteres" />
+      ) : (
+        <Input label="Nueva contraseña (dejar vacío para no cambiar)" type="password" value={form.contrasena} onChange={set('contrasena')} placeholder="Nueva contraseña..." />
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Input label="Teléfono *" value={form.telefono} onChange={set('telefono')} required placeholder="5551234567" />
@@ -123,7 +125,7 @@ export default function Medicos() {
 
   const toEditInitial = (m) => ({
     nombre: m.nombre || '', apellido: m.apellido || '', correo: m.correo || '',
-    telefono: m.telefono || '', cedulaProfesional: m.cedulaProfesional || '',
+    contrasena: '', telefono: m.telefono || '', cedulaProfesional: m.cedulaProfesional || '',
   });
 
   return (

@@ -10,6 +10,8 @@ import com.medikitos.medicit.entity.Cita;
 
 public interface Repo_Cita extends JpaRepository<Cita, Long> {
 
+    List<Cita> findByDeletedAtIsNull();
+
     boolean existsByMedico_IdAndFechaAndHoraInicioAndHoraFinAndDeletedAtIsNull(
             Long medicoId, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin);
 

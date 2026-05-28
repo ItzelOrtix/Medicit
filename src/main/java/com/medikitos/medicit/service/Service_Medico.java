@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.medikitos.medicit.dto.Dto_Medico;
@@ -20,6 +21,9 @@ public class Service_Medico {
 
     @Autowired
     private Repo_Medico repoMedico;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Dto_Medico> getAll() {
         return repoMedico.findAll()
@@ -38,6 +42,9 @@ public class Service_Medico {
         Medico medico = repoMedico.findById(id)
                 .orElseThrow(() -> new RuntimeException("Médico no encontrado con id: " + id));
         Mapper_Medico.actualizarEntity(medico, dto);
+        if (dto.getContrasena() != null && !dto.getContrasena().isBlank()) {
+            medico.setContrasena(passwordEncoder.encode(dto.getContrasena()));
+        }
         return Mapper_Medico.toDto(repoMedico.save(medico));
     }
 

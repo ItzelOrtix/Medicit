@@ -10,30 +10,61 @@ import Toast from '../components/ui/Toast';
 const DIAS = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO'];
 const DIA_LABEL = { LUNES: 'Lun', MARTES: 'Mar', MIERCOLES: 'Mié', JUEVES: 'Jue', VIERNES: 'Vie', SABADO: 'Sáb', DOMINGO: 'Dom' };
 
-const emptyForm = { medicoId: '', diaSemana: 'LUNES', horaInicio: '09:00', horaFin: '13:00', disponible: true };
+const emptyForm = { medicoId: '', dias: [], horaInicio: '09:00', horaFin: '13:00' };
 
 function HorarioForm({ medicos, onSubmit, onClose, loading }) {
   const [form, setForm] = useState(emptyForm);
   const set = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
+  const toggleDia = (dia) =>
+    setForm((p) => ({
+      ...p,
+      dias: p.dias.includes(dia) ? p.dias.filter((d) => d !== dia) : [...p.dias, dia],
+    }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.medicoId || form.dias.length === 0) return;
+    onSubmit({ medicoId: Number(form.medicoId), dias: form.dias, horaInicio: form.horaInicio, horaFin: form.horaFin });
+  };
+
   return (
-    <form onSubmit={(e) => { e.preventDefault(); onSubmit({ ...form, medicoId: Number(form.medicoId), disponible: true }); }} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Select label="Médico *" value={form.medicoId} onChange={set('medicoId')} required>
         <option value="">Seleccionar médico...</option>
         {medicos.map((m) => (
           <option key={m.id} value={m.id}>{m.nombre} {m.apellido}</option>
         ))}
       </Select>
-      <Select label="Día de la semana *" value={form.diaSemana} onChange={set('diaSemana')} required>
-        {DIAS.map((d) => <option key={d} value={d}>{d}</option>)}
-      </Select>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          Días <span className="text-xs text-gray-400 font-normal">(puedes elegir varios)</span>
+        </label>
+        <div className="grid grid-cols-4 gap-1.5">
+          {DIAS.map((d) => (
+            <button
+              key={d} type="button"
+              onClick={() => toggleDia(d)}
+              className={`py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+                form.dias.includes(d)
+                  ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                  : 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+            >
+              {DIA_LABEL[d]}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <Input label="Hora inicio *" type="time" value={form.horaInicio} onChange={set('horaInicio')} required />
         <Input label="Hora fin *" type="time" value={form.horaFin} onChange={set('horaFin')} required />
       </div>
       <div className="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
         <Button type="button" variant="secondary" onClick={onClose}>Cancelar</Button>
-        <Button type="submit" disabled={loading}>{loading ? 'Guardando...' : 'Agregar horario'}</Button>
+        <Button type="submit" disabled={loading || !form.medicoId || form.dias.length === 0}>
+          {loading ? 'Guardando...' : `Agregar${form.dias.length > 1 ? ` (${form.dias.length} días)` : ''}`}
+        </Button>
       </div>
     </form>
   );
@@ -65,14 +96,18 @@ export default function Horarios() {
     ? medicos
     : medicos.filter((m) => String(m.id) === medicoSeleccionado);
 
-  const handleCreate = async (form) => {
+  const handleCreate = async ({ medicoId, dias, horaInicio, horaFin }) => {
     setLoading(true);
     try {
-      await horarioService.create(form);
+      await Promise.all(
+        dias.map((dia) =>
+          horarioService.create({ medicoId, diaSemana: dia, horaInicio, horaFin, disponible: true })
+        )
+      );
       await load();
       setModal(false);
-      showToast('Horario agregado correctamente');
-    } catch { showToast('Error al agregar horario', 'error'); }
+      showToast(`Horario agregado para ${dias.length} día${dias.length > 1 ? 's' : ''}`);
+    } catch (e) { showToast(e?.response?.data || 'Error al agregar horario', 'error'); }
     finally { setLoading(false); }
   };
 

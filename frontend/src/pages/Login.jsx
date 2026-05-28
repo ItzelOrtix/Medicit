@@ -99,7 +99,12 @@ export default function Login() {
         usuario: data.usuario,
         rol: data.rol,
       }));
-      navigate('/dashboard');
+      if (data.rol === 'MEDICO') {
+        localStorage.setItem('medicit_medico_id', data.id);
+        navigate('/doctor/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setLoading(false);
       setError(err.response?.data || 'Correo o contraseña incorrectos');

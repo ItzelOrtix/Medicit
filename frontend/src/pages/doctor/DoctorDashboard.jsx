@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import { CalendarDays, Clock } from 'lucide-react';
-import { mockMedicos, mockCitas, mockHorarios } from '../../data/mockData';
+import { citaService } from '../../services/citaService';
+import { medicoService } from '../../services/medicoService';
+import { horarioService } from '../../services/horarioService';
 
 const DAYS_ES   = ['DOMINGO','LUNES','MARTES','MIERCOLES','JUEVES','VIERNES','SABADO'];
 const DAYS_FULL = { LUNES:'Lunes', MARTES:'Martes', MIERCOLES:'Miércoles', JUEVES:'Jueves', VIERNES:'Viernes', SABADO:'Sábado', DOMINGO:'Domingo' };
@@ -20,18 +23,32 @@ function greeting() {
 
 export default function DoctorDashboard() {
   const medicoId  = parseInt(localStorage.getItem('medicit_medico_id'));
-  const medico    = mockMedicos.find((m) => m.id === medicoId);
-  const nombre    = medico?.nombre || 'Doctor';
+  const today     = new Date().toISOString().split('T')[0];
+  const todayDay  = DAYS_ES[new Date().getDay()];
 
-  const misCitas  = mockCitas.filter((c) => c.medicoId === medicoId);
-  const activas   = misCitas.filter((c) => ['PENDIENTE','CONFIRMADA'].includes(c.estado?.nombre));
-  const proximas  = [...activas].sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 4);
-  const pacUnicos = [...new Set(misCitas.map((c) => c.pacienteId))].length;
+  const [nombre,     setNombre]     = useState('Doctor');
+  const [proximas,   setProximas]   = useState([]);
+  const [pacUnicos,  setPacUnicos]  = useState(0);
+  const [horarioHoy, setHorarioHoy] = useState([]);
+  const [citasHoy,   setCitasHoy]   = useState([]);
 
-  const today      = new Date().toISOString().split('T')[0];
-  const todayDay   = DAYS_ES[new Date().getDay()];
-  const horarioHoy = mockHorarios.filter((h) => h.medicoId === medicoId && h.diaSemana === todayDay);
-  const citasHoy   = misCitas.filter((c) => c.fecha === today);
+  useEffect(() => {
+    medicoService.getById(medicoId)
+      .then((res) => setNombre(res.data?.nombre || 'Doctor'))
+      .catch(() => {});
+
+    citaService.getAll().then((res) => {
+      const misCitas = res.data.filter((c) => c.medicoId === medicoId);
+      const activas  = misCitas.filter((c) => ['PENDIENTE', 'CONFIRMADA'].includes(c.estado?.nombre));
+      setProximas([...activas].sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 4));
+      setPacUnicos([...new Set(misCitas.map((c) => c.pacienteId))].length);
+      setCitasHoy(misCitas.filter((c) => c.fecha === today));
+    }).catch(() => {});
+
+    horarioService.getByMedico(medicoId)
+      .then((res) => setHorarioHoy((res.data || []).filter((h) => h.diaSemana === todayDay)))
+      .catch(() => {});
+  }, [medicoId]);
 
   const todayShort = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long' }).toUpperCase();
 

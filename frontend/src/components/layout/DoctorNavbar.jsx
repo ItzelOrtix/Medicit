@@ -1,28 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { LogOut, ChevronDown, Moon, Sun, UserCircle, Search } from 'lucide-react';
 import Logo from '../ui/Logo';
 import { useTheme } from '../../hooks/useTheme';
 import SearchModal from '../ui/SearchModal';
-import { mockMedicos } from '../../data/mockData';
+import { medicoService } from '../../services/medicoService';
 
 export default function DoctorNavbar() {
-  const navigate   = useNavigate();
-  const [menuOpen,    setMenuOpen]    = useState(false);
-  const [searchOpen,  setSearchOpen]  = useState(false);
+  const navigate  = useNavigate();
+  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { dark, toggle } = useTheme();
 
   const medicoId = parseInt(localStorage.getItem('medicit_medico_id'));
-  const medico   = mockMedicos.find((m) => m.id === medicoId);
-  const esp      = medico?.especialidades?.[0]?.nombre || 'Médico';
-  const initials = medico
-    ? `${medico.nombre.replace(/^Dr[a]?\. /, '')[0]}${medico.apellido[0]}`
-    : 'M';
-  const displayName = medico ? `${medico.nombre} ${medico.apellido}` : 'Médico';
+  const [medico, setMedico] = useState(null);
+
+  useEffect(() => {
+    medicoService.getById(medicoId)
+      .then((res) => setMedico(res.data))
+      .catch(() => {});
+  }, [medicoId]);
+
+  const nombre      = medico?.nombre || '';
+  const apellido    = medico?.apellido || '';
+  const displayName = medico ? `${nombre} ${apellido}` : 'Médico';
+  const initials    = medico ? `${nombre.replace(/^Dr[a]?\. /, '')[0] || 'M'}${apellido[0] || ''}` : 'M';
+  const esp         = medico?.especialidades?.[0]?.nombre || 'Médico';
 
   const handleLogout = () => {
-    localStorage.removeItem('medicit_auth');
-    localStorage.removeItem('medicit_role');
+    localStorage.removeItem('medicit_token');
+    localStorage.removeItem('medicit_user');
     localStorage.removeItem('medicit_medico_id');
     navigate('/login');
   };
@@ -33,7 +40,7 @@ export default function DoctorNavbar() {
       <nav className="flex items-center bg-gray-900/95 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 shadow-2xl w-full max-w-4xl">
 
         {/* Logo */}
-        <div className="mr-3 pl-1 cursor-pointer" onClick={() => navigate('/medico/dashboard')}>
+        <div className="mr-3 pl-1 cursor-pointer" onClick={() => navigate('/doctor/dashboard')}>
           <Logo theme="dark" size="sm" animateText={false} />
         </div>
 
@@ -42,8 +49,9 @@ export default function DoctorNavbar() {
         {/* Links de navegación */}
         <div className="flex items-center gap-1">
           {[
-            { to: '/medico/horario',   label: 'Mi horario' },
-            { to: '/medico/pacientes', label: 'Pacientes' },
+            { to: '/doctor/horario',          label: 'Citas' },
+            { to: '/doctor/horario-laboral',  label: 'Mi horario' },
+            { to: '/doctor/pacientes',        label: 'Pacientes' },
           ].map(({ to, label }) => (
             <NavLink
               key={to}
@@ -91,7 +99,7 @@ export default function DoctorNavbar() {
               <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                 {initials}
               </div>
-              <span className="text-white/80 text-sm font-medium">{medico?.nombre || 'Médico'}</span>
+              <span className="text-white/80 text-sm font-medium">{nombre || 'Médico'}</span>
               <ChevronDown size={13} className={`text-white/40 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
             </button>
 
@@ -99,10 +107,11 @@ export default function DoctorNavbar() {
               <div className="absolute right-0 top-full mt-2 bg-gray-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden min-w-[200px]">
                 <div className="px-4 py-3 border-b border-white/10">
                   <p className="text-white text-xs font-semibold truncate">{displayName}</p>
-                  <p className="text-white/40 text-xs mt-0.5">{medico?.email}</p>
+                  <p className="text-white/40 text-xs mt-0.5">{medico?.correo}</p>
+                  <p className="text-white/30 text-xs mt-0.5">{esp}</p>
                 </div>
                 <button
-                  onClick={() => { navigate('/medico/perfil'); setMenuOpen(false); }}
+                  onClick={() => { navigate('/doctor/perfil'); setMenuOpen(false); }}
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
                 >
                   <UserCircle size={14} />
@@ -120,7 +129,7 @@ export default function DoctorNavbar() {
           </div>
 
           <span className="text-xs text-white/30 font-medium px-2.5 py-1 rounded-full border border-white/10 bg-white/5 select-none">
-            Médico
+            {esp}
           </span>
         </div>
 

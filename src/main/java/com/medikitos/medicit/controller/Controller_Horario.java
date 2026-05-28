@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,12 @@ public class Controller_Horario {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un horario")
+    public ResponseEntity<Dto_Horario> update(@PathVariable Long id, @RequestBody Dto_Horario dto) {
+        return ResponseEntity.ok(serviceHorario.update(id, dto));
     }
 
     @PatchMapping("/{id}/toggle")
