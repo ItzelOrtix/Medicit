@@ -5,7 +5,6 @@ public class Dto_RegistroMedico {
     private String nombre;
     private String apellido;
     private String correo;
-    private String usuario;
     private String contrasena;
     private String telefono;
     private String cedulaProfesional;
@@ -35,14 +34,6 @@ public class Dto_RegistroMedico {
 
     public void setCorreo(String correo) {
         this.correo = correo;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
     }
 
     public String getContrasena() {

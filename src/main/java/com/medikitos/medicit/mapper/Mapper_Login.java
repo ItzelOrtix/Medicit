@@ -13,7 +13,7 @@ public class Mapper_Login {
                 token,
                 credencial.getId(),
                 credencial.getCorreo(),
-                credencial.getUsuario(),
+                credencial.getCorreo().split("@")[0],
                 credencial.getRol().getNombre(),
                 expiraEn);
     }

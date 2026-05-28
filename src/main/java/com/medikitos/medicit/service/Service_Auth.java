@@ -42,7 +42,7 @@ public class Service_Auth {
 
     public Dto_Paciente registrarPaciente(Dto_RegistroPaciente dto) {
         Validator_Paciente.validarRegistro(dto);
-        validarCredencialDisponible(dto.getCorreo(), dto.getUsuario());
+        validarCredencialDisponible(dto.getCorreo());
 
         Role rolePaciente = obtenerRole("PACIENTE");
 
@@ -68,12 +68,9 @@ public class Service_Auth {
         return Mapper_Login.toDto(credencial, token, jwtService.getExpirationWeb());
     }
 
-    private void validarCredencialDisponible(String correo, String usuario) {
+    private void validarCredencialDisponible(String correo) {
         if (repoCredencial.existsByCorreo(correo.trim().toLowerCase())) {
             throw new IllegalArgumentException("El correo ya está registrado");
-        }
-        if (repoCredencial.existsByUsuario(usuario.trim())) {
-            throw new IllegalArgumentException("El usuario ya está registrado");
         }
     }
 

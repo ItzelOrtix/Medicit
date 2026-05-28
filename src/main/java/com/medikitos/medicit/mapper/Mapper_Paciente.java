@@ -17,7 +17,6 @@ public class Mapper_Paciente {
         Paciente paciente = new Paciente();
 
         paciente.setCorreo(dto.getCorreo().trim().toLowerCase());
-        paciente.setUsuario(dto.getUsuario().trim());
         paciente.setContrasena(contrasenaEncriptada);
         paciente.setRol(rol);
         paciente.setNombre(dto.getNombre().trim());
@@ -45,6 +44,7 @@ public class Mapper_Paciente {
     public static Dto_Paciente toDto(Paciente paciente) {
 
         return new Dto_Paciente(
+                paciente.getId(),
                 paciente.getNombre(),
                 paciente.getApellido(),
                 paciente.getCorreo(),

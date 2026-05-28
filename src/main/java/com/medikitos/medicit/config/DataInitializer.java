@@ -28,9 +28,6 @@ public class DataInitializer implements CommandLineRunner {
     @Value("${admin.correo}")
     private String adminCorreo;
 
-    @Value("${admin.usuario}")
-    private String adminUsuario;
-
     @Value("${admin.contrasena}")
     private String adminContrasena;
 
@@ -60,7 +57,6 @@ public class DataInitializer implements CommandLineRunner {
         Role roleAdmin = repoRole.findByNombre("ADMINISTRADOR");
         Credencial admin = new Credencial();
         admin.setCorreo(adminCorreo);
-        admin.setUsuario(adminUsuario);
         admin.setContrasena(passwordEncoder.encode(adminContrasena));
         admin.setRol(roleAdmin);
         admin.setCreatedAt(Instant.now());

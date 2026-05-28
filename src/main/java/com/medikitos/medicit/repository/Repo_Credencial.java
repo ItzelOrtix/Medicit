@@ -10,10 +10,6 @@ public interface Repo_Credencial extends JpaRepository<Credencial, Long> {
 
     Optional<Credencial> findByCorreo(String correo);
 
-    Optional<Credencial> findByUsuario(String usuario);
-
     boolean existsByCorreo(String correo);
-
-    boolean existsByUsuario(String usuario);
 
 }

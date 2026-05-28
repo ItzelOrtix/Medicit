@@ -8,7 +8,6 @@ public class Validator_Paciente {
 
     private static final String NOMBRE_REGEX = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,60}$";
     private static final String CORREO_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-    private static final String USUARIO_REGEX = "^(?=(?:.*[A-Za-z]){4,})[A-Za-z0-9@$&%]{5,10}$";
     private static final String CONTRASENA_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$";
     private static final String TELEFONO_REGEX = "^\\d{10}$";
     private Validator_Paciente() {
@@ -21,7 +20,6 @@ public class Validator_Paciente {
         validarNombre(dto.getNombre(), "El nombre no tiene un formato válido");
         validarNombre(dto.getApellido(), "El apellido no tiene un formato válido");
         validarCorreo(dto.getCorreo());
-        validarUsuario(dto.getUsuario());
         validarContrasena(dto.getContrasena());
         validarTelefono(dto.getTelefono());
         validarFechaNacimiento(dto.getFechaNacimiento());
@@ -32,13 +30,6 @@ public class Validator_Paciente {
     public static boolean validarCorreo(String correo) {
         if (isBlank(correo) || !correo.trim().matches(CORREO_REGEX)) {
             throw new IllegalArgumentException("El correo no tiene un formato válido");
-        }
-        return true;
-    }
-
-    public static boolean validarUsuario(String usuario) {
-        if (isBlank(usuario) || !usuario.trim().matches(USUARIO_REGEX)) {
-            throw new IllegalArgumentException("El usuario debe tener entre 5 y 10 caracteres, mínimo 4 letras y solo letras, números o @ $ & %");
         }
         return true;
     }

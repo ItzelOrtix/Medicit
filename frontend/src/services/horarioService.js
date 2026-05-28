@@ -1,45 +1,13 @@
 import api from './api';
-import { mockHorarios } from '../data/mockData';
-
-const USE_MOCK = true;
-
-let localMock = [...mockHorarios];
 
 export const horarioService = {
-  getAll: async () => {
-    if (USE_MOCK) return { data: localMock };
-    return api.get('/horario');
-  },
+  getAll: async () => api.get('/horarios'),
 
-  getByMedico: async (medicoId) => {
-    if (USE_MOCK) return { data: localMock.filter((h) => h.medicoId === medicoId) };
-    return api.get(`/horario/medico/${medicoId}`);
-  },
+  getByMedico: async (medicoId) => api.get(`/horarios/medico/${medicoId}`),
 
-  create: async (horario) => {
-    if (USE_MOCK) {
-      const nuevo = { ...horario, id: Date.now() };
-      localMock = [...localMock, nuevo];
-      return { data: nuevo };
-    }
-    return api.post('/horario', horario);
-  },
+  create: async (horario) => api.post('/horarios', horario),
 
-  toggleDisponibilidad: async (id) => {
-    if (USE_MOCK) {
-      localMock = localMock.map((h) =>
-        h.id === id ? { ...h, disponible: !h.disponible } : h
-      );
-      return { data: localMock.find((h) => h.id === id) };
-    }
-    return api.patch(`/horario/${id}/toggle`);
-  },
+  toggleDisponibilidad: async (id) => api.patch(`/horarios/${id}/toggle`),
 
-  delete: async (id) => {
-    if (USE_MOCK) {
-      localMock = localMock.filter((h) => h.id !== id);
-      return { data: { message: 'Eliminado' } };
-    }
-    return api.delete(`/horario/${id}`);
-  },
+  delete: async (id) => api.delete(`/horarios/${id}`),
 };

@@ -34,7 +34,7 @@ public class Service_Administrador {
 
     public Dto_Medico registrarMedico(Dto_RegistroMedico dto) {
         Validator_Medico.validarRegistro(dto);
-        validarCredencialDisponible(dto.getCorreo(), dto.getUsuario());
+        validarCredencialDisponible(dto.getCorreo());
         if (repoMedico.existsByCedulaProfesional(dto.getCedulaProfesional().trim())) {
             throw new IllegalArgumentException("La cédula profesional ya está registrada");
         }
@@ -49,12 +49,9 @@ public class Service_Administrador {
         return Mapper_Medico.toDto(repoMedico.save(medico));
     }
 
-    private void validarCredencialDisponible(String correo, String usuario) {
+    private void validarCredencialDisponible(String correo) {
         if (repoCredencial.existsByCorreo(correo.trim().toLowerCase())) {
             throw new IllegalArgumentException("El correo ya está registrado");
-        }
-        if (repoCredencial.existsByUsuario(usuario.trim())) {
-            throw new IllegalArgumentException("El usuario ya está registrado");
         }
     }
 

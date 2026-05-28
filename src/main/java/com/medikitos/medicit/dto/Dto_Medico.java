@@ -1,20 +1,24 @@
 package com.medikitos.medicit.dto;
 
 import java.time.Instant;
+import java.util.List;
 
 public class Dto_Medico {
 
+    private Long id;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
     private String cedulaProfesional;
+    private List<Dto_Especialidad> especialidades;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Medico(String nombre, String apellido, String correo, String telefono,
+    public Dto_Medico(Long id, String nombre, String apellido, String correo, String telefono,
             String cedulaProfesional, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -23,6 +27,14 @@ public class Dto_Medico {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -63,6 +75,14 @@ public class Dto_Medico {
 
     public void setCedulaProfesional(String cedulaProfesional) {
         this.cedulaProfesional = cedulaProfesional;
+    }
+
+    public List<Dto_Especialidad> getEspecialidades() {
+        return especialidades;
+    }
+
+    public void setEspecialidades(List<Dto_Especialidad> especialidades) {
+        this.especialidades = especialidades;
     }
 
     public Instant getCreatedAt() {

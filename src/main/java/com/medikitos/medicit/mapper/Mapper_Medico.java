@@ -1,7 +1,11 @@
 package com.medikitos.medicit.mapper;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.medikitos.medicit.dto.Dto_Especialidad;
 import com.medikitos.medicit.dto.Dto_Medico;
 import com.medikitos.medicit.dto.Dto_RegistroMedico;
 import com.medikitos.medicit.entity.Medico;
@@ -17,7 +21,6 @@ public class Mapper_Medico {
         Medico medico = new Medico();
 
         medico.setCorreo(dto.getCorreo().trim().toLowerCase());
-        medico.setUsuario(dto.getUsuario().trim());
         medico.setContrasena(contrasenaEncriptada);
         medico.setRol(rol);
         medico.setNombre(dto.getNombre().trim());
@@ -29,9 +32,19 @@ public class Mapper_Medico {
         return medico;
     }
 
+    public static void actualizarEntity(Medico medico, Dto_Medico dto) {
+        medico.setNombre(dto.getNombre());
+        medico.setApellido(dto.getApellido());
+        medico.setCorreo(dto.getCorreo());
+        medico.setTelefono(dto.getTelefono());
+        medico.setCedulaProfesional(dto.getCedulaProfesional());
+        medico.setUpdatedAt(Instant.now());
+    }
+
     public static Dto_Medico toDto(Medico medico) {
 
-        return new Dto_Medico(
+        Dto_Medico dto = new Dto_Medico(
+                medico.getId(),
                 medico.getNombre(),
                 medico.getApellido(),
                 medico.getCorreo(),
@@ -40,6 +53,15 @@ public class Mapper_Medico {
                 medico.getCreatedAt(),
                 medico.getUpdatedAt(),
                 medico.getDeletedAt());
+
+        List<Dto_Especialidad> especialidades = (medico.getEspecialidades() != null)
+                ? medico.getEspecialidades().stream()
+                        .map(me -> Mapper_Especialidad.toDto(me.getEspecialidad()))
+                        .collect(Collectors.toList())
+                : Collections.emptyList();
+        dto.setEspecialidades(especialidades);
+
+        return dto;
     }
 
 }

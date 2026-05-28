@@ -1,50 +1,41 @@
 import api from './api';
-import { mockCitas, mockPacientes, mockMedicos, mockEstadosCita } from '../data/mockData';
 
-const USE_MOCK = true;
-
-let localMock = [...mockCitas];
-
-const enrich = (cita) => ({
-  ...cita,
-  paciente: mockPacientes.find((p) => p.id === cita.pacienteId) || cita.paciente,
-  medico: mockMedicos.find((m) => m.id === cita.medicoId) || cita.medico,
-  estado: mockEstadosCita.find((e) => e.id === cita.estadoId) || cita.estado,
+const enrich = (c) => ({
+  ...c,
+  paciente: { nombre: c.pacienteNombre, apellido: c.pacienteApellido },
+  medico: {
+    nombre: c.medicoNombre,
+    apellido: c.medicoApellido,
+    especialidades: c.medicoEspecialidad ? [{ nombre: c.medicoEspecialidad }] : [],
+  },
+  estado: { nombre: c.estado },
 });
 
 export const citaService = {
   getAll: async () => {
-    if (USE_MOCK) return { data: localMock.map(enrich) };
-    return api.get('/cita');
+    const res = await api.get('/cita');
+    return { data: res.data.map(enrich) };
   },
 
   getById: async (id) => {
-    if (USE_MOCK) return { data: enrich(localMock.find((c) => c.id === id)) };
-    return api.get(`/cita/${id}`);
+    const res = await api.get(`/cita/${id}`);
+    return { data: enrich(res.data) };
   },
 
   create: async (cita) => {
-    if (USE_MOCK) {
-      const nueva = { ...cita, id: Date.now() };
-      localMock = [...localMock, nueva];
-      return { data: enrich(nueva) };
-    }
-    return api.post('/cita', cita);
+    const res = await api.post('/cita', cita);
+    return { data: enrich(res.data) };
   },
 
   update: async (id, cita) => {
-    if (USE_MOCK) {
-      localMock = localMock.map((c) => (c.id === id ? { ...c, ...cita } : c));
-      return { data: enrich({ ...cita, id }) };
-    }
-    return api.put(`/cita/${id}`, cita);
+    const res = await api.put(`/cita/${id}`, cita);
+    return { data: enrich(res.data) };
   },
 
   cancelar: async (id) => {
-    if (USE_MOCK) {
-      localMock = localMock.map((c) => (c.id === id ? { ...c, estadoId: 3 } : c));
-      return { data: enrich(localMock.find((c) => c.id === id)) };
-    }
-    return api.patch(`/cita/${id}/cancelar`);
+    const res = await api.patch(`/cita/${id}/cancelar`);
+    return { data: enrich(res.data) };
   },
+
+  delete: async (id) => api.delete(`/cita/${id}`),
 };

@@ -1,43 +1,23 @@
 import api from './api';
-import { mockMedicos } from '../data/mockData';
-
-const USE_MOCK = true;
-
-let localMock = [...mockMedicos];
 
 export const medicoService = {
-  getAll: async () => {
-    if (USE_MOCK) return { data: localMock };
-    return api.get('/medico');
-  },
+  getAll: async () => api.get('/medicos'),
 
-  getById: async (id) => {
-    if (USE_MOCK) return { data: localMock.find((m) => m.id === id) };
-    return api.get(`/medico/${id}`);
-  },
+  getById: async (id) => api.get(`/medicos/${id}`),
 
   create: async (medico) => {
-    if (USE_MOCK) {
-      const nuevo = { ...medico, id: Date.now(), especialidades: [] };
-      localMock = [...localMock, nuevo];
-      return { data: nuevo };
+    const { especialidadId, ...payload } = medico;
+    const response = await api.post('/administrador/medicos', payload);
+    if (especialidadId && response.data?.id) {
+      await api.post(`/administrador/especialidades/asignar-medico/${especialidadId}/${response.data.id}`);
     }
-    return api.post('/medico', medico);
+    return response;
   },
 
   update: async (id, medico) => {
-    if (USE_MOCK) {
-      localMock = localMock.map((m) => (m.id === id ? { ...m, ...medico } : m));
-      return { data: { ...medico, id } };
-    }
-    return api.put(`/medico/${id}`, medico);
+    const { especialidadId, usuario, contrasena, ...payload } = medico;
+    return api.put(`/medicos/${id}`, payload);
   },
 
-  delete: async (id) => {
-    if (USE_MOCK) {
-      localMock = localMock.filter((m) => m.id !== id);
-      return { data: { message: 'Eliminado' } };
-    }
-    return api.delete(`/medico/${id}`);
-  },
+  delete: async (id) => api.delete(`/medicos/${id}`),
 };

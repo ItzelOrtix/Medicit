@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class Dto_Paciente {
 
+    private Long id;
     private String nombre;
     private String apellido;
     private String correo;
@@ -16,8 +17,9 @@ public class Dto_Paciente {
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Paciente(String nombre, String apellido, String correo, String telefono, LocalDate fechaNacimiento,
+    public Dto_Paciente(Long id, String nombre, String apellido, String correo, String telefono, LocalDate fechaNacimiento,
             String genero, String direccion, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -28,6 +30,14 @@ public class Dto_Paciente {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {

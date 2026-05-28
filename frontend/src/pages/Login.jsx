@@ -64,7 +64,7 @@ export default function Login() {
   const [shake, setShake] = useState(false);
 
   // Register state
-  const [regForm, setRegForm] = useState({ nombre: '', apellido: '', usuario: '', telefono: '', fechaNacimiento: '', genero: '', direccion: '', email: '', password: '', confirm: '' });
+  const [regForm, setRegForm] = useState({ nombre: '', apellido: '', telefono: '', fechaNacimiento: '', genero: '', direccion: '', email: '', password: '', confirm: '' });
   const [showRegPass, setShowRegPass] = useState(false);
   const [regLoading, setRegLoading] = useState(false);
   const [regError, setRegError] = useState('');
@@ -125,7 +125,7 @@ export default function Login() {
         nombre: regForm.nombre,
         apellido: regForm.apellido,
         correo: regForm.email,
-        usuario: regForm.usuario,
+        usuario: regForm.email.split('@')[0],
         contrasena: regForm.password,
         telefono: regForm.telefono,
         fechaNacimiento: regForm.fechaNacimiento,
@@ -292,13 +292,6 @@ export default function Login() {
                     </div>
                   </div>
 
-                  {/* Usuario */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Usuario</label>
-                    <input type="text" value={regForm.usuario} onChange={(e) => setRegForm(p => ({ ...p, usuario: e.target.value }))}
-                      required placeholder="nombre_usuario" className={inputClass} />
-                  </div>
-
                   {/* Teléfono y Fecha */}
                   <div className="flex gap-3">
                     <div className="flex flex-col gap-1.5 flex-1">
@@ -405,22 +398,7 @@ export default function Login() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <motion.div
-          className="absolute top-7 right-7 z-20 text-right flex flex-col gap-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
-        >
-          {[
-            ['SIS.ESTADO', 'ACTIVO', true],
-            ['UPTIME',     '99.9%',  false],
-            ['ATENCIÓN',   'LUN–SAB',false],
-          ].map(([key, val, dot]) => (
-            <p key={key} className="text-white/30 text-xs font-mono tracking-widest">
-              {key} // {val}{dot && <span className="ml-1.5 text-green-400">●</span>}
-            </p>
-          ))}
-        </motion.div>
+        
 
         <motion.div
           className="flex gap-3 px-8 pt-16 pb-4 overflow-hidden flex-1 min-h-0"

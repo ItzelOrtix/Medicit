@@ -31,9 +31,6 @@ public class Credencial {
     @Column(nullable = false, unique = true)
     private String correo;
 
-    @Column(nullable = false, unique = true)
-    private String usuario;
-
     @Column(nullable = false)
     private String contrasena;
 

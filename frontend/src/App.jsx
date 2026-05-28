@@ -8,6 +8,7 @@ import Medicos from './pages/Medicos';
 import Citas from './pages/Citas';
 import Horarios from './pages/Horarios';
 import Perfil from './pages/Perfil';
+import Especialidades from './pages/Especialidades';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('medicit_token');
@@ -32,6 +33,7 @@ export default function App() {
                   <Route path="/citas" element={<Citas />} />
                   <Route path="/horarios" element={<Horarios />} />
                   <Route path="/perfil" element={<Perfil />} />
+                  <Route path="/especialidades" element={<Especialidades />} />
                 </Routes>
               </Layout>
             </ProtectedRoute>

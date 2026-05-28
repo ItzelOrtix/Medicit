@@ -1,115 +1,78 @@
 package com.medikitos.medicit.dto;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Dto_Cita {
 
+    private Long id;
     private Long pacienteId;
+    private String pacienteNombre;
+    private String pacienteApellido;
     private Long medicoId;
-    private LocalDate fecha;
-    private LocalTime horaInicio;
-    private LocalTime horaFin;
+    private String medicoNombre;
+    private String medicoApellido;
+    private String medicoEspecialidad;
+    private String estado;
+    private String fecha;
+    private String horaInicio;
+    private String horaFin;
     private String motivo;
     private String notas;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Cita(Long pacienteId, Long medicoId, LocalDate fecha, LocalTime horaInicio,
-            LocalTime horaFin, String motivo, String notas,
-            Instant createdAt, Instant updatedAt, Instant deletedAt) {
-        this.pacienteId = pacienteId;
-        this.medicoId = medicoId;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.motivo = motivo;
-        this.notas = notas;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-    }
+    public Dto_Cita() {}
 
-    public Long getPacienteId() {
-        return pacienteId;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPacienteId(Long pacienteId) {
-        this.pacienteId = pacienteId;
-    }
+    public Long getPacienteId() { return pacienteId; }
+    public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
 
-    public Long getMedicoId() {
-        return medicoId;
-    }
+    public String getPacienteNombre() { return pacienteNombre; }
+    public void setPacienteNombre(String pacienteNombre) { this.pacienteNombre = pacienteNombre; }
 
-    public void setMedicoId(Long medicoId) {
-        this.medicoId = medicoId;
-    }
+    public String getPacienteApellido() { return pacienteApellido; }
+    public void setPacienteApellido(String pacienteApellido) { this.pacienteApellido = pacienteApellido; }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
+    public Long getMedicoId() { return medicoId; }
+    public void setMedicoId(Long medicoId) { this.medicoId = medicoId; }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
+    public String getMedicoNombre() { return medicoNombre; }
+    public void setMedicoNombre(String medicoNombre) { this.medicoNombre = medicoNombre; }
 
-    public LocalTime getHoraInicio() {
-        return horaInicio;
-    }
+    public String getMedicoApellido() { return medicoApellido; }
+    public void setMedicoApellido(String medicoApellido) { this.medicoApellido = medicoApellido; }
 
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+    public String getMedicoEspecialidad() { return medicoEspecialidad; }
+    public void setMedicoEspecialidad(String medicoEspecialidad) { this.medicoEspecialidad = medicoEspecialidad; }
 
-    public LocalTime getHoraFin() {
-        return horaFin;
-    }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
-    public void setHoraFin(LocalTime horaFin) {
-        this.horaFin = horaFin;
-    }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
-    public String getMotivo() {
-        return motivo;
-    }
+    public String getHoraInicio() { return horaInicio; }
+    public void setHoraInicio(String horaInicio) { this.horaInicio = horaInicio; }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
+    public String getHoraFin() { return horaFin; }
+    public void setHoraFin(String horaFin) { this.horaFin = horaFin; }
 
-    public String getNotas() {
-        return notas;
-    }
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    public void setNotas(String notas) {
-        this.notas = notas;
-    }
+    public String getNotas() { return notas; }
+    public void setNotas(String notas) { this.notas = notas; }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
+    public Instant getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Instant deletedAt) {
-        this.deletedAt = deletedAt;
-    }
+    public Instant getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
 
 }

@@ -19,7 +19,6 @@ public class Validator_Medico {
         validarNombre(dto.getNombre(), "El nombre no tiene un formato válido");
         validarNombre(dto.getApellido(), "El apellido no tiene un formato válido");
         Validator_Paciente.validarCorreo(dto.getCorreo());
-        Validator_Paciente.validarUsuario(dto.getUsuario());
         validarContrasena(dto.getContrasena());
         validarTelefono(dto.getTelefono());
         validarCedula(dto.getCedulaProfesional());

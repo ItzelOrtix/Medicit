@@ -1,105 +1,58 @@
 package com.medikitos.medicit.dto;
 
 import java.time.Instant;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Dto_Horario {
 
+    private Long id;
     private Long medicoId;
-    private DayOfWeek diaSemana;
-    private LocalTime horaInicio;
-    private LocalTime horaFin;
-    private Boolean activo;
-    private LocalDate fechaEspecifica;
+    private String medicoNombre;
+    private String medicoApellido;
+    private String diaSemana;
+    private String horaInicio;
+    private String horaFin;
+    private Boolean disponible;
+    private String fechaEspecifica;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Dto_Horario(Long medicoId, DayOfWeek diaSemana, LocalTime horaInicio, LocalTime horaFin,
-            Boolean activo, LocalDate fechaEspecifica, Instant createdAt, Instant updatedAt, Instant deletedAt) {
-        this.medicoId = medicoId;
-        this.diaSemana = diaSemana;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.activo = activo;
-        this.fechaEspecifica = fechaEspecifica;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-    }
+    public Dto_Horario() {}
 
-    public Long getMedicoId() {
-        return medicoId;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setMedicoId(Long medicoId) {
-        this.medicoId = medicoId;
-    }
+    public Long getMedicoId() { return medicoId; }
+    public void setMedicoId(Long medicoId) { this.medicoId = medicoId; }
 
-    public DayOfWeek getDiaSemana() {
-        return diaSemana;
-    }
+    public String getMedicoNombre() { return medicoNombre; }
+    public void setMedicoNombre(String medicoNombre) { this.medicoNombre = medicoNombre; }
 
-    public void setDiaSemana(DayOfWeek diaSemana) {
-        this.diaSemana = diaSemana;
-    }
+    public String getMedicoApellido() { return medicoApellido; }
+    public void setMedicoApellido(String medicoApellido) { this.medicoApellido = medicoApellido; }
 
-    public LocalTime getHoraInicio() {
-        return horaInicio;
-    }
+    public String getDiaSemana() { return diaSemana; }
+    public void setDiaSemana(String diaSemana) { this.diaSemana = diaSemana; }
 
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+    public String getHoraInicio() { return horaInicio; }
+    public void setHoraInicio(String horaInicio) { this.horaInicio = horaInicio; }
 
-    public LocalTime getHoraFin() {
-        return horaFin;
-    }
+    public String getHoraFin() { return horaFin; }
+    public void setHoraFin(String horaFin) { this.horaFin = horaFin; }
 
-    public void setHoraFin(LocalTime horaFin) {
-        this.horaFin = horaFin;
-    }
+    public Boolean getDisponible() { return disponible; }
+    public void setDisponible(Boolean disponible) { this.disponible = disponible; }
 
-    public Boolean getActivo() {
-        return activo;
-    }
+    public String getFechaEspecifica() { return fechaEspecifica; }
+    public void setFechaEspecifica(String fechaEspecifica) { this.fechaEspecifica = fechaEspecifica; }
 
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
-    public LocalDate getFechaEspecifica() {
-        return fechaEspecifica;
-    }
+    public Instant getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setFechaEspecifica(LocalDate fechaEspecifica) {
-        this.fechaEspecifica = fechaEspecifica;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Instant deletedAt) {
-        this.deletedAt = deletedAt;
-    }
+    public Instant getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
 
 }
