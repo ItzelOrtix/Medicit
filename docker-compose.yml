@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: medicit
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: porta1258
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d medicit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://db:5432/medicit
+      DB_USER: postgres
+      DB_PASSWORD: porta1258
+      JWT_SECRET: mi_clave_super_segura_de_32_caracteres_minimo_123456
+      JWT_EXPIRATION_WEB: 86400000
+      ADMIN_CORREO: admin@medicit.com
+      ADMIN_USUARIO: admin
+      ADMIN_CONTRASENA: admin123
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
