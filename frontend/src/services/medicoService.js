@@ -18,7 +18,7 @@ export const medicoService = {
 
   create: async (medico) => {
     if (USE_MOCK) {
-      const nuevo = { ...medico, id: Date.now(), especialidades: [] };
+      const nuevo = { ...medico, id: Date.now() };
       localMock = [...localMock, nuevo];
       return { data: nuevo };
     }

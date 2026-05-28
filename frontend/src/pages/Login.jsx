@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight, Heart, Stethoscope, Activity, CalendarDays } from 'lucide-react';
 import Logo from '../components/ui/Logo';
+import { mockMedicos } from '../data/mockData';
 
-const CREDENTIALS = { email: 'admin@medicit.com', password: 'admin123' };
+const ADMIN          = { email: 'admin@medicit.com', password: 'admin123' };
+const DOCTOR_PASS    = 'medico123';
 
 const COL_LEFT = [
   'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=500&q=90',
@@ -88,16 +90,30 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    await new Promise((r) => setTimeout(r, 1500));
-    if (loginForm.email === CREDENTIALS.email && loginForm.password === CREDENTIALS.password) {
+    await new Promise((r) => setTimeout(r, 1200));
+
+    // Admin
+    if (loginForm.email === ADMIN.email && loginForm.password === ADMIN.password) {
       localStorage.setItem('medicit_auth', 'true');
+      localStorage.setItem('medicit_role', 'admin');
       navigate('/dashboard');
-    } else {
-      setLoading(false);
-      setError('Correo o contraseña incorrectos');
-      setShake(true);
-      setTimeout(() => setShake(false), 500);
+      return;
     }
+
+    // Médico
+    const medico = mockMedicos.find((m) => m.email === loginForm.email);
+    if (medico && loginForm.password === DOCTOR_PASS) {
+      localStorage.setItem('medicit_auth', 'true');
+      localStorage.setItem('medicit_role', 'medico');
+      localStorage.setItem('medicit_medico_id', String(medico.id));
+      navigate('/medico/dashboard');
+      return;
+    }
+
+    setLoading(false);
+    setError('Correo o contraseña incorrectos');
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
   };
 
   const handleRegister = async (e) => {
@@ -220,7 +236,15 @@ export default function Login() {
                   </button>
                 </motion.form>
 
-                <p className="text-xs text-gray-400 text-center mt-6">
+                <div className="mt-5 p-3.5 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-xs font-semibold text-gray-500 mb-2">Accesos de prueba</p>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-xs text-gray-400"><span className="font-medium text-gray-600">Admin:</span> admin@medicit.com / admin123</p>
+                    <p className="text-xs text-gray-400"><span className="font-medium text-gray-600">Médico:</span> dr.salinas@medicit.com / medico123</p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-400 text-center mt-4">
                   ¿No tienes cuenta?{' '}
                   <button onClick={() => switchMode('register')} className="text-gray-900 font-semibold hover:underline cursor-pointer">
                     Regístrate aquí
