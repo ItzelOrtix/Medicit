@@ -10,6 +10,10 @@ import com.medikitos.medicit.entity.Horario;
 
 public interface Repo_Horario extends JpaRepository<Horario, Long> {
 
+    List<Horario> findByDeletedAtIsNull();
+
+    List<Horario> findByMedico_IdAndDeletedAtIsNull(Long medicoId);
+
     List<Horario> findByMedico_IdAndDiaSemanaAndActivoTrueAndDeletedAtIsNull(Long medicoId, DayOfWeek diaSemana);
 
     List<Horario> findByMedico_IdAndFechaEspecificaAndActivoTrueAndDeletedAtIsNull(Long medicoId, LocalDate fecha);

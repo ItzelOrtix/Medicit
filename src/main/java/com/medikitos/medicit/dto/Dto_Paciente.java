@@ -13,12 +13,13 @@ public class Dto_Paciente {
     private LocalDate fechaNacimiento;
     private String genero;
     private String direccion;
+    private String fotoPerfil;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 
     public Dto_Paciente(Long id, String nombre, String apellido, String correo, String telefono, LocalDate fechaNacimiento,
-            String genero, String direccion, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+            String genero, String direccion, String fotoPerfil, Instant createdAt, Instant updatedAt, Instant deletedAt) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -27,6 +28,7 @@ public class Dto_Paciente {
         this.fechaNacimiento = fechaNacimiento;
         this.genero = genero;
         this.direccion = direccion;
+        this.fotoPerfil = fotoPerfil;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -94,6 +96,14 @@ public class Dto_Paciente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 
     public Instant getCreatedAt() {

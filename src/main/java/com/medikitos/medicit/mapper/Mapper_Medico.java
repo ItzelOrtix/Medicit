@@ -60,6 +60,7 @@ public class Mapper_Medico {
                         .collect(Collectors.toList())
                 : Collections.emptyList();
         dto.setEspecialidades(especialidades);
+        dto.setFotoPerfil(medico.getFotoPerfil());
 
         return dto;
     }

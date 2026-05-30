@@ -9,6 +9,8 @@ public class Dto_Medico {
     private String nombre;
     private String apellido;
     private String correo;
+    private String contrasena;
+    private String fotoPerfil;
     private String telefono;
     private String cedulaProfesional;
     private List<Dto_Especialidad> especialidades;
@@ -60,6 +62,17 @@ public class Dto_Medico {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getFotoPerfil() { return fotoPerfil; }
+    public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
 
     public String getTelefono() {
         return telefono;

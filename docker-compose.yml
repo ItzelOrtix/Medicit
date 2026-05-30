@@ -27,8 +27,9 @@ services:
       JWT_SECRET: mi_clave_super_segura_de_32_caracteres_minimo_123456
       JWT_EXPIRATION_WEB: 86400000
       ADMIN_CORREO: admin@medicit.com
-      ADMIN_USUARIO: admin
       ADMIN_CONTRASENA: admin123
+      PACIENTE_CORREO: test@medicit.com
+      PACIENTE_CONTRASENA: Test@123
     ports:
       - "8080:8080"
     depends_on:
@@ -40,7 +41,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8106:80"
     depends_on:
       - server
 

@@ -3,12 +3,16 @@ import { Plus, Search, CalendarDays, X } from 'lucide-react';
 import { citaService } from '../services/citaService';
 import { pacienteService } from '../services/pacienteService';
 import { medicoService } from '../services/medicoService';
-const ESTADOS_CITA = ['PENDIENTE', 'CONFIRMADA', 'COMPLETADA', 'CANCELADA'];
+import { notificacionService } from '../services/notificacionService';
+import Pagination from '../components/ui/Pagination';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
 import Input, { Select, Textarea } from '../components/ui/Input';
 import Badge from '../components/ui/Badge';
 import Toast from '../components/ui/Toast';
+
+const ESTADOS_CITA = ['PENDIENTE', 'CONFIRMADA', 'COMPLETADA', 'CANCELADA'];
+const PAGE_SIZE = 4;
 
 const emptyForm = { pacienteId: '', medicoId: '', fecha: '', horaInicio: '', horaFin: '', estado: 'PENDIENTE', motivo: '', notas: '' };
 
@@ -58,6 +62,7 @@ export default function Citas() {
   const [medicos, setMedicos] = useState([]);
   const [search, setSearch] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('TODOS');
+  const [page, setPage] = useState(1);
   const [modal, setModal] = useState(null);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -94,7 +99,8 @@ export default function Citas() {
   const handleCreate = async (form) => {
     setLoading(true);
     try {
-      await citaService.create(form);
+      const { data } = await citaService.create(form);
+      notificacionService.confirmarCita(data);
       await load();
       setModal(null);
       showToast('Cita registrada correctamente');
@@ -105,7 +111,8 @@ export default function Citas() {
   const handleEdit = async (form) => {
     setLoading(true);
     try {
-      await citaService.update(selected.id, form);
+      const { data } = await citaService.update(selected.id, form);
+      notificacionService.notificarCambio(data);
       await load();
       setModal(null);
       showToast('Cita actualizada');
@@ -116,13 +123,15 @@ export default function Citas() {
   const handleCancelar = async (id) => {
     if (!confirm('¿Cancelar esta cita?')) return;
     try {
-      await citaService.cancelar(id);
+      const { data } = await citaService.cancelar(id);
+      notificacionService.notificarCancelacion(data);
       await load();
       showToast('Cita cancelada');
     } catch { showToast('Error al cancelar', 'error'); }
   };
 
   const sortedFiltered = [...filtered].sort((a, b) => a.fecha.localeCompare(b.fecha) || a.horaInicio.localeCompare(b.horaInicio));
+  const paginated = sortedFiltered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="p-4 sm:p-8">
@@ -178,7 +187,7 @@ export default function Citas() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50 dark:divide-gray-700">
-              {sortedFiltered.length === 0 && (
+              {filtered.length === 0 && (
                 <tr>
                   <td colSpan={6} className="text-center py-14">
                     <CalendarDays size={32} className="mx-auto mb-2 text-gray-200 dark:text-gray-600" />
@@ -186,7 +195,7 @@ export default function Citas() {
                   </td>
                 </tr>
               )}
-              {sortedFiltered.map((c) => (
+              {paginated.map((c) => (
                 <tr key={c.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors">
                   <td className="px-4 sm:px-6 py-4">
                     <p className="font-medium text-gray-900 dark:text-white">{c.paciente?.nombre} {c.paciente?.apellido}</p>
@@ -218,6 +227,7 @@ export default function Citas() {
             </tbody>
           </table>
         </div>
+        <Pagination page={page} total={sortedFiltered.length} pageSize={PAGE_SIZE} onChange={setPage} />
       </div>
 
       <Modal isOpen={modal === 'create'} onClose={() => setModal(null)} title="Nueva cita" size="lg">

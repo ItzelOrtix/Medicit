@@ -52,6 +52,7 @@ public class Mapper_Paciente {
                 paciente.getFechaNacimiento(),
                 paciente.getGenero(),
                 paciente.getDireccion(),
+                paciente.getFotoPerfil(),
                 paciente.getCreatedAt(),
                 paciente.getUpdatedAt(),
                 paciente.getDeletedAt());

@@ -37,6 +37,9 @@ public class Paciente extends Credencial {
     @Column(columnDefinition = "TEXT")
     private String direccion;
 
+    @Column(columnDefinition = "TEXT")
+    private String fotoPerfil;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
     private List<Cita> citas;

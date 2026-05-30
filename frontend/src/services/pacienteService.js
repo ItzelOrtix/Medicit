@@ -10,4 +10,14 @@ export const pacienteService = {
   update: async (id, paciente) => api.put(`/pacientes/${id}`, paciente),
 
   delete: async (id) => api.delete(`/pacientes/${id}`),
+
+  actualizarFoto: async (id, file) => {
+    const formData = new FormData();
+    formData.append('foto', file);
+    return api.put(`/pacientes/${id}/foto`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+
+  eliminarFoto: async (id) => api.delete(`/pacientes/${id}/foto`),
 };

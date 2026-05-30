@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 import { pacienteService } from '../services/pacienteService';
+import Pagination from '../components/ui/Pagination';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
 import Input, { Select } from '../components/ui/Input';
@@ -46,9 +47,12 @@ function PacienteForm({ initial, mode, onSubmit, onClose, loading }) {
   );
 }
 
+const PAGE_SIZE = 4;
+
 export default function Pacientes() {
   const [pacientes, setPacientes] = useState([]);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [modal, setModal] = useState(null);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -75,6 +79,7 @@ export default function Pacientes() {
       p.correo?.toLowerCase().includes(q)
     );
   });
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleCreate = async (form) => {
     setLoading(true);
@@ -164,13 +169,17 @@ export default function Pacientes() {
                   <td colSpan={5} className="text-center py-12 text-gray-400 dark:text-gray-500">Sin resultados</td>
                 </tr>
               )}
-              {filtered.map((p) => (
+              {paginated.map((p) => (
                 <tr key={p.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors">
                   <td className="px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 shrink-0">
-                        {p.nombre?.[0]}{p.apellido?.[0]}
-                      </div>
+                      {p.fotoPerfil ? (
+                        <img src={p.fotoPerfil} alt={p.nombre} className="w-8 h-8 rounded-full object-cover shrink-0" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 shrink-0">
+                          {p.nombre?.[0]}{p.apellido?.[0]}
+                        </div>
+                      )}
                       <div>
                         <p className="font-medium text-gray-900 dark:text-white">{p.nombre} {p.apellido}</p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 md:hidden">{p.correo}</p>
@@ -199,6 +208,7 @@ export default function Pacientes() {
             </tbody>
           </table>
         </div>
+        <Pagination page={page} total={filtered.length} pageSize={PAGE_SIZE} onChange={(p) => { setPage(p); }} />
       </div>
 
       <Modal isOpen={modal === 'create'} onClose={() => setModal(null)} title="Registrar nuevo paciente">

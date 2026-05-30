@@ -29,6 +29,14 @@ public class Mapper_Horario {
         return horario;
     }
 
+    public static void actualizarEntity(Horario horario, Dto_Horario dto) {
+        if (dto.getDiaSemana() != null) horario.setDiaSemana(toJavaDayOfWeek(dto.getDiaSemana()));
+        if (dto.getHoraInicio() != null) horario.setHoraInicio(LocalTime.parse(dto.getHoraInicio()));
+        if (dto.getHoraFin() != null) horario.setHoraFin(LocalTime.parse(dto.getHoraFin()));
+        if (dto.getDisponible() != null) horario.setActivo(dto.getDisponible());
+        horario.setUpdatedAt(Instant.now());
+    }
+
     public static Dto_Horario toDto(Horario horario) {
         Dto_Horario dto = new Dto_Horario();
         dto.setId(horario.getId());

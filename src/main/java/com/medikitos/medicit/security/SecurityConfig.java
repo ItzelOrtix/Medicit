@@ -35,7 +35,9 @@ public class SecurityConfig {
                         .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/administrador/especialidades/listar").authenticated()
                         .requestMatchers("/api/administrador/**").hasAuthority("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.GET, "/api/medicos", "/api/medicos/**").authenticated()
                         .requestMatchers("/api/medicos/**").hasAnyAuthority("MEDICO", "ADMINISTRADOR")
                         .requestMatchers("/api/pacientes/**").hasAnyAuthority("PACIENTE", "ADMINISTRADOR")
                         .anyRequest().authenticated())
@@ -51,7 +53,9 @@ public class SecurityConfig {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOriginPatterns(List.of(
                         "http://localhost:*",
-                        "http://127.0.0.1:*"));
+                        "http://127.0.0.1:*",
+                        "https://equipo4b.itolab.lat",
+                        "http://equipo4b.itolab.lat"));
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
                 config.setExposedHeaders(List.of("Authorization"));

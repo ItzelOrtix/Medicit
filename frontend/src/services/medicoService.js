@@ -20,4 +20,14 @@ export const medicoService = {
   },
 
   delete: async (id) => api.delete(`/medicos/${id}`),
+
+  actualizarFoto: async (id, file) => {
+    const formData = new FormData();
+    formData.append('foto', file);
+    return api.put(`/medicos/${id}/foto`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+
+  eliminarFoto: async (id) => api.delete(`/medicos/${id}/foto`),
 };

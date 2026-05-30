@@ -30,6 +30,9 @@ public class Medico extends Credencial {
     @Column(nullable = false, unique = true)
     private String cedulaProfesional;
 
+    @Column(columnDefinition = "TEXT")
+    private String fotoPerfil;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
     private List<Horario> horarios;
