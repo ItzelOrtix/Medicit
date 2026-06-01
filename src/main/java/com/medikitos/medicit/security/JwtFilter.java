@@ -37,7 +37,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (!jwtService.isValid(token)) {
             SecurityContextHolder.clearContext();
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido o expirado");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Token inválido o expirado\"}");
             return;
         }
 
